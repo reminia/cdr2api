@@ -1,0 +1,38 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: 'sbt'
+
+      - name: publish packages
+        run: sbt publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: package zips
+        run: sbt universal:packageBin
+
+      - name: release zips
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "target/universal/*.zip"
+          tag: ${{ github.ref }}
+          allowUpdates: true
