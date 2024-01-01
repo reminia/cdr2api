@@ -34,7 +34,7 @@ lazy val root = project
   .aggregate(bridge)
 
 lazy val bridge = project
-  .in(file("lang-bridge"))
+  .in(file("./lang-bridge"))
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .settings(commonSettings)
   .settings(
