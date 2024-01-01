@@ -15,7 +15,7 @@ val commonSettings = Seq(
   organization := "me.yceel",
   javacOptions := Seq("-source", javaVersion, "-target", javaVersion),
   scalacOptions ++= Seq("-Xsource:3"),
-  resolvers += githubResolver
+  resolvers += "Github Package" at "https://maven.pkg.github.com/reminia/_"
 )
 
 lazy val root = project
@@ -31,6 +31,7 @@ lazy val root = project
     Universal / mappings ++= Seq(file("README.md") -> "README.md"),
   )
   .settings(publishSettings)
+  .aggregate(bridge)
 
 lazy val bridge = project
   .in(file("lang-bridge"))
