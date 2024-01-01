@@ -1,14 +1,22 @@
 import Build._
 
-version := "0.1.0-SNAPSHOT"
-scalaVersion := "2.13.12"
-organization := "me.yceel"
-maintainer := "sleefd@gmail.com"
+val projectVersion = "0.1.0-SNAPSHOT"
 val javaVersion = "11"
+val scala2version = "2.13.12"
 
 javacOptions ++= Seq("-source", javaVersion, "-target", javaVersion)
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
+
+val commonSettings = Seq(
+  version := projectVersion,
+  scalaVersion := scala2version,
+  maintainer := "sleefd@gmail.com",
+  organization := "me.yceel",
+  javacOptions := Seq("-source", javaVersion, "-target", javaVersion),
+  scalacOptions ++= Seq("-Xsource:3"),
+  resolvers += githubResolver
+)
 
 lazy val root = project
   .in(file("."))
@@ -23,3 +31,15 @@ lazy val root = project
     Universal / mappings ++= Seq(file("README.md") -> "README.md"),
   )
   .settings(publishSettings)
+
+lazy val bridge = project
+  .in(file("lang-bridge"))
+  .enablePlugins(JavaAppPackaging, UniversalPlugin)
+  .settings(commonSettings)
+  .settings(
+    name := "bridge",
+    libraryDependencies ++= Seq(
+      "me.yceel.json2struct" %% "core" % "0.5.0",
+      scalaTest
+    )
+  )
