@@ -1,4 +1,4 @@
-import Build._
+import Build.*
 
 val projectVersion = "0.1.0-SNAPSHOT"
 val javaVersion = "11"
@@ -34,13 +34,14 @@ lazy val root = project
   .aggregate(bridge)
 
 lazy val bridge = project
-  .in(file("./lang-bridge"))
+  .in(file("lang-bridge"))
   .enablePlugins(JavaAppPackaging, UniversalPlugin)
   .settings(commonSettings)
   .settings(
     name := "bridge",
     libraryDependencies ++= Seq(
       "me.yceel.json2struct" %% "core" % "0.5.0",
+      "com.squareup" % "javapoet" % "1.13.0",
       scalaTest
     )
   )
